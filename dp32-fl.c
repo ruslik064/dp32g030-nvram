@@ -119,7 +119,7 @@ int Init(uint32_t Addr, uint32_t Freq, uint32_t Func)
 {
 	FLASH_CFG = (FLASH_CFG & ~FLASH_CFG_NVR_SEL_MASK) | FLASH_CFG_NVR_SEL_BITS_NVR;
 	
-	}
+	
 	return 0;
 }
 
@@ -134,7 +134,7 @@ int EraseChip(void)
 {
 	uint32_t i;
 
-	for (i = 0x200; i < 0x800; i += 512) {
+	for (i = 0; i < 0x800; i += 512) {
 		int ret = EraseSector(i);
 
 		if (ret) {
