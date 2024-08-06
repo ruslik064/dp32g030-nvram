@@ -118,12 +118,7 @@ int CheckBlank(uint32_t Addr, uint32_t NumBytes, uint8_t BlankValue) __attribute
 int Init(uint32_t Addr, uint32_t Freq, uint32_t Func)
 {
 	FLASH_CFG = (FLASH_CFG & ~FLASH_CFG_NVR_SEL_MASK) | FLASH_CFG_NVR_SEL_BITS_NVR;
-	if (FLASH_MASK != 0) {
-		FLASH_MASK = 0;
-		WaitNotBusy();
-		if (FLASH_MASK != 0) {
-			return 1;
-		}
+	
 	}
 	return 0;
 }
@@ -139,7 +134,7 @@ int EraseChip(void)
 {
 	uint32_t i;
 
-	for (i = 0; i < 0x1000; i += 512) {
+	for (i = 0x200; i < 0x800; i += 512) {
 		int ret = EraseSector(i);
 
 		if (ret) {
@@ -153,7 +148,7 @@ int EraseChip(void)
 int EraseSector(uint32_t SectorAddr)
 {
 
-	if (SectorAddr % 512 || SectorAddr >= 0x1000) {
+	if (SectorAddr % 512 || SectorAddr >= 0x800) {
 		return 1;
 	}
 
@@ -174,7 +169,7 @@ int EraseSector(uint32_t SectorAddr)
 
 int ProgramPage(uint32_t DestAddr, uint32_t NumBytes, const uint8_t *pBuffer)
 {
-	if (DestAddr % BLOCK_SIZE || DestAddr >= 0x1000 || NumBytes % BLOCK_SIZE || NumBytes > 0x1000 || (DestAddr + NumBytes) > 0x1000) {
+	if (DestAddr % BLOCK_SIZE || DestAddr >= 0x800 || NumBytes % BLOCK_SIZE || NumBytes > 0x800 || (DestAddr + NumBytes) > 0x800) {
 		return 1;
 	}
 
