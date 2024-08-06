@@ -29,7 +29,7 @@ const FlashDevice_t FlashDevice = {
 	"DP32G030 Internal Flash",
 	1,
 	0x00000000,
-	0x00001000,
+	0x00000800,
 	0x00000200,
 	0x00000000,
 	0xFF,
@@ -117,7 +117,8 @@ int CheckBlank(uint32_t Addr, uint32_t NumBytes, uint8_t BlankValue) __attribute
 
 int Init(uint32_t Addr, uint32_t Freq, uint32_t Func)
 {
-	 if (FLASH_MASK != 0) {
+	FLASH_CFG = (FLASH_CFG & ~FLASH_CFG_NVR_SEL_MASK) | FLASH_CFG_NVR_SEL_BITS_NVR;
+	if (FLASH_MASK != 0) {
 		FLASH_MASK = 0;
 		WaitNotBusy();
 		if (FLASH_MASK != 0) {
